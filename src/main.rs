@@ -8,7 +8,7 @@ use tui::{
     backend::CrosstermBackend,
     layout::{Constraint, Direction, Layout},
     text::Text,
-    widgets::{Block, Borders, Widget},
+    widgets::{Block, Borders, Paragraph, Widget, Wrap},
     Terminal,
 };
 
@@ -22,9 +22,13 @@ fn main() -> Result<(), io::Error> {
 
     terminal.draw(|f| {
         let size = f.size();
-        let block = Block::default().title("Help Desk").borders(Borders::ALL);
+
         let text = Text::raw("Welcome to the Titus Moore Help Desk!");
-        f.render_widget(block, size);
+        let paragraph = Paragraph::new(text)
+            .block(Block::default().title("Help Desk").borders(Borders::ALL))
+            .wrap(Wrap { trim: true });
+
+        f.render_widget(paragraph, size);
     })?;
 
     thread::sleep(Duration::from_millis(5000));
@@ -40,4 +44,3 @@ fn main() -> Result<(), io::Error> {
 
     Ok(())
 }
-
